@@ -1,12 +1,11 @@
 {
-    "name": "league/oauth2-github",
-    "description": "Github OAuth 2.0 Client Provider for The PHP League OAuth2-Client",
-    "license": "MIT",
+    "name": "pnobbe/oauth2-discord",
+    "description": "Discord OAuth 2.0 Client Provider for The PHP League OAuth2-Client",
     "authors": [
         {
-            "name": "Steven Maguire",
-            "email": "stevenmaguire@gmail.com",
-            "homepage": "https://github.com/stevenmaguire"
+            "name": "Patrick Nobbe",
+            "email": "patrick.nobbe@hotmail.com",
+            "homepage": "https://github.com/pnobbe"
         }
     ],
     "keywords": [
@@ -15,7 +14,7 @@
         "client",
         "authorization",
         "authorisation",
-        "github"
+        "discord"
     ],
     "require": {
         "php": ">=5.5.0",
