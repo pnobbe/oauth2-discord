@@ -91,6 +91,15 @@ class DiscordResourceOwner implements ResourceOwnerInterface
     }
 
     /**
+     * Retrieve picture url
+     *
+     * @return string|null
+     */
+    public function getPictureUrl() {
+        return "https://discordapp.com/api/users/" . $this->response['id'] . "/avatars/" . $this->response['avatar'] . ".jpg" ?: null;
+    }
+
+    /**
      * Return all of the owner details available as an array.
      *
      * @return array

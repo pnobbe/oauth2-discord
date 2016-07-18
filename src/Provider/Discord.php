@@ -70,7 +70,7 @@ class Discord extends AbstractProvider
      */
     protected function getDefaultScopes()
     {
-        return ['identify', 'email'];
+        return ['email'];
     }
 
     /**
