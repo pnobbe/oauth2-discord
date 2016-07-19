@@ -16,7 +16,7 @@ class Discord extends AbstractProvider
      *
      * @var string
      */
-    public $domain = 'https://discordapp.com/';
+    public $domain = 'https://discordapp.com';
 
     /**
      * Api domain
@@ -57,7 +57,6 @@ class Discord extends AbstractProvider
     public function getResourceOwnerDetailsUrl(AccessToken $token)
     {
         return $this->apiDomain . '/users/@me';
-
     }
 
     /**
