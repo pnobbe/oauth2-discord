@@ -1,4 +1,4 @@
-<?php namespace League\OAuth2\Client\Test\Provider;
+<?php namespace Discord\Oauth\Tests;
 
 use Mockery as m;
 
@@ -8,7 +8,7 @@ class DiscordTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->provider = new \League\OAuth2\Client\Provider\Discord([
+        $this->provider = new \Discord\Oauth\Discord([
             'clientId' => '202027428267294721',
             'clientSecret' => 'biHcuB0k4JUsbTLipNIGR2WMK6Vi9SvZ',
             'redirectUri' => 'none',

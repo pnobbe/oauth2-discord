@@ -1,107 +1,149 @@
 <?php
 
-namespace League\OAuth2\Client\Provider;
-
-use League\OAuth2\Client\Provider\Exception\DiscordIdentityProviderException;
+namespace pnobbe;
+use pnobbe\Exception\DiscordRequestException;
+use pnobbe\Parts\User;
+use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Token\AccessToken;
-use League\OAuth2\Client\Tool\BearerAuthorizationTrait;
 use Psr\Http\Message\ResponseInterface;
 
 class Discord extends AbstractProvider
 {
-    use BearerAuthorizationTrait;
-
     /**
-     * Domain
+     * The base API url.
      *
-     * @var string
+     * @var string Base API url.
      */
-    public $domain = 'https://discordapp.com';
-
+    const BASE_API_URL = 'https://discordapp.com/api';
     /**
-     * Api domain
+     * An array of available OAuth scopes.
      *
-     * @var string
+     * @var array Available scopes.
      */
-    public $apiDomain = 'https://discordapp.com/api';
-
+    protected $scopes = [
+        'identify', // Allows you to retrieve user data (except for email)
+        'email', // The same as identify but with email
+        'connections', // Allows you to retrieve connected YouTube and Twitch accounts
+        'guilds', // Allows you to retrieve the guilds the user is in
+        'guilds.join', // Allows you to join the guild for the user
+        'bot', // Defines a bot
+    ];
     /**
-     * Get authorization url to begin OAuth flow
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getBaseAuthorizationUrl()
     {
-        return $this->domain . '/api/oauth2/authorize';
+        return self::BASE_API_URL.'/oauth2/authorize';
     }
-
     /**
-     * Get access token url to retrieve token
-     *
-     * @param  array $params
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getBaseAccessTokenUrl(array $params)
     {
-        return $this->domain . '/api/oauth2/token';
+        return self::BASE_API_URL.'/oauth2/token';
     }
-
     /**
-     * Get provider url to fetch user details
-     *
-     * @param  AccessToken $token
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getResourceOwnerDetailsUrl(AccessToken $token)
     {
-        return $this->apiDomain . '/users/@me';
+        return self::BASE_API_URL.'/users/@me';
     }
-
     /**
-     * Get the default scopes used by this provider.
-     *
-     * This should not be a complete list of all scopes, but the minimum
-     * required for the provider user interface!
-     *
-     * @return array
+     * {@inheritdoc}
      */
     protected function getDefaultScopes()
     {
         return ['email'];
     }
-
     /**
-     * Check a provider response for errors.
-     *
-     * @link   https://developer.github.com/v3/#client-errors
-     * @link   https://developer.github.com/v3/oauth/#common-errors-for-the-access-token-request
-     * @throws IdentityProviderException
-     * @param  ResponseInterface $response
-     * @param  string $data Parsed response data
-     * @return void
+     * {@inheritdoc}
+     */
+    public function getScopeSeparator()
+    {
+        return ' ';
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthorizationHeaders($token = null)
+    {
+        return [
+            'Authorization' => 'Bearer '.$token->getToken(),
+        ];
+    }
+    /**
+     * {@inheritdoc}
      */
     protected function checkResponse(ResponseInterface $response, $data)
     {
-        if ($response->getStatusCode() >= 400) {
-            throw DiscordIdentityProviderException::clientException($response, $data);
-        } elseif (isset($data['error'])) {
-            throw DiscordIdentityProviderException::oauthException($response, $data);
+        if (isset($data['error'])) {
+            throw new DiscordRequestException('Error in response from Discord: '.$data['error']);
         }
     }
-
     /**
-     * Generate a user object from a successful user details request.
-     *
-     * @param array $response
-     * @param AccessToken $token
-     * @return League\OAuth2\Client\Provider\ResourceOwnerInterface
+     * {@inheritdoc}
      */
     protected function createResourceOwner(array $response, AccessToken $token)
     {
-        $user = new DiscordResourceOwner($response);
-
-        return $user->setDomain($this->domain);
+        return new User($this, $token, (array) $response);
+    }
+    /**
+     * Runs a request.
+     *
+     * @param string      $method The HTTP method.
+     * @param string      $url    The URL.
+     * @param AccessToken $token  The auth token.
+     *
+     * @return array Response.
+     */
+    public function request($method, $url, $token)
+    {
+        $request = $this->getAuthenticatedRequest(
+            $method, $url, $token
+        );
+        return $this->getResponse($request);
+    }
+    /**
+     * Gets the guilds endpoint.
+     *
+     * @return string Endpoint.
+     */
+    public function getGuildsEndpoint()
+    {
+        return self::BASE_API_URL.'/users/@me/guilds';
+    }
+    /**
+     * Gets the connections endpoint.
+     *
+     * @return string Endpoint.
+     */
+    public function getConnectionsEndpoint()
+    {
+        return self::BASE_API_URL.'/users/@me/connections';
+    }
+    /**
+     * Gets the accept invite endpoint.
+     *
+     * @param string $invite The invite.
+     *
+     * @return string Endpoint.
+     */
+    public function getInviteEndpoint($invite)
+    {
+        return self::BASE_API_URL.'/invites/'.$invite;
+    }
+    /**
+     * Builds a part.
+     *
+     * @param string      $part       The part to build.
+     * @param AccessToken $token      The access token.
+     * @param array       $attributes Array of attributes.
+     *
+     * @return Part A part.
+     */
+    public function buildPart($part, AccessToken $token, $attributes = [])
+    {
+        return new $part($this, $token, (array) $attributes);
     }
 }
