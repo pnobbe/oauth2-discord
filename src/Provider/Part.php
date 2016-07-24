@@ -8,7 +8,7 @@
  * with this source code in the LICENSE.md file.
  */
 
-namespace pnobbe\OAuth2\Client;
+namespace pnobbe\OAuth2\Client\Provider;
 use League\OAuth2\Client\Token\AccessToken;
 
 class Part
