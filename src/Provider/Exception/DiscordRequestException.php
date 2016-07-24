@@ -1,6 +1,6 @@
 <?php
 
-namespace pnobbe\Exception;
+namespace pnobbe\Oauth2\Client\Exception;
 
 class DiscordRequestException extends \Exception
 {}

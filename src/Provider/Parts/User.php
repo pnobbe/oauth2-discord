@@ -7,9 +7,9 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the LICENSE.md file.
  */
-namespace pnobbe\Parts;
-use pnobbe\Discord;
-use pnobbe\Part;
+namespace pnobbe\Oauth2\Client\Parts;
+use pnobbe\Oauth2\Client\Discord;
+use pnobbe\Oauth2\Client\Part;
 use Illuminate\Support\Collection;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 
