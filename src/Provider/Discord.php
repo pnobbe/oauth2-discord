@@ -1,8 +1,8 @@
 <?php
 
-namespace pnobbe\Oauth2\Client;
-use pnobbe\Oauth2\Client\Exception\DiscordRequestException;
-use pnobbe\Oauth2\Client\Parts\User;
+namespace pnobbe\OAuth2\Client;
+use pnobbe\OAuth2\Client\Exception\DiscordRequestException;
+use pnobbe\OAuth2\Client\Parts\User;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Http\Message\ResponseInterface;
