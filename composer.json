@@ -3,6 +3,7 @@
     "description": "Discord OAuth 2.0 Client Provider for The PHP League OAuth2-Client - Revisioned from Teamreflex's Discord Provider",
 	"version": "v1.0",
     "minimum-stability": "stable",
+    "license": "GPL-3.0+",
     "authors": [
         {
             "name": "Patrick Nobbe",
