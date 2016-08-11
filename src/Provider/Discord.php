@@ -54,7 +54,7 @@ class Discord extends AbstractProvider
      */
     protected function getDefaultScopes()
     {
-        return ['email'];
+        return ['email', 'identify'];
     }
     /**
      * {@inheritdoc}
@@ -69,7 +69,7 @@ class Discord extends AbstractProvider
     public function getAuthorizationHeaders($token = null)
     {
         return [
-            'Authorization' => 'Bearer '.$token->getToken(),
+            'Authorization' => 'Bearer ' . $token->getToken(),
         ];
     }
     /**
